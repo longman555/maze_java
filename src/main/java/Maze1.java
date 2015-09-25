@@ -2,7 +2,7 @@
  * u–_“|‚µ–@v‚ğg‚Á‚Ä–À˜H‚ğ©“®¶¬‚·‚é
  */
 import java.util.Random;
-
+import java.util.ArrayList;
 
 public class Maze1 extends MazeBase {
 
@@ -69,6 +69,9 @@ public class Maze1 extends MazeBase {
 
     public static void main(String[] args) {
         Maze1 maze1 = new Maze1();
-        maze1.showMaze();
+        maze1.showMaze(); System.out.println();
+        ArrayList<Pos> path = maze1.solveMaze();
+        System.out.printf("[main] Found Path Length -> %d\n", path.size());
+        maze1.showSolved(); System.out.println();
     }
 }

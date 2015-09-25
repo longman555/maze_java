@@ -52,10 +52,6 @@ public abstract class MazeBase {
         path = new ArrayList<>();
     }
 
-    public void showMaze() {
-        for (char[] row : maze) { System.out.println(new String(row)); }
-    }
-
     static private boolean checkPos(Pos newPos, char[][] maze, ArrayList<Pos> p) {
         int x = newPos.x, y = newPos.y;
         if (x<START_POS.x || y<START_POS.y || x>GOAL_POS.x || y>GOAL_POS.y) {
@@ -73,10 +69,10 @@ public abstract class MazeBase {
         frontier.add(path);
         while (!frontier.isEmpty()) {
             path = frontier.poll();
-            last = path.get(path.size()-1);
+            Pos last = path.get(path.size()-1);
             if (GOAL_POS.equals(last)) { return path; }
             for (Pos d : DIRECTIONS) {
-                Pos newPos = new Pos(last.y+d.y, last.x+d.x);
+                Pos newPos = new Pos(last.x+d.x, last.y+d.y);
                 if (!checkPos(newPos, maze, path)) { continue; }
                 ArrayList<Pos> copy = new ArrayList<>(path);
                 copy.add(newPos);
@@ -91,7 +87,7 @@ public abstract class MazeBase {
         Pos last = path.get(path.size()-1);
         if (GOAL_POS.equals(last)) { return path; }
         for (Pos d : DIRECTIONS) {
-            Pos newPos = new Pos(last.y+d.y, last.x+d.x);
+            Pos newPos = new Pos(last.x+d.x, last.y+d.y);
             if (!checkPos(newPos, maze, path)) { continue; }
             ArrayList<Pos> copy = new ArrayList<>(path);
             copy.add(newPos);
@@ -113,7 +109,31 @@ public abstract class MazeBase {
     }
     public ArrayList<Pos> solveMaze() {
         this.path = solveMaze(maze);
+        if (path.isEmpty()) { System.out.println("empty!"); }
         return path;
+    }
+
+    static public void showMaze(char[][] maze) {
+        for (char[] row : maze) { System.out.println(new String(row)); }
+    }
+
+    public void showMaze() { showMaze(maze); }
+
+    public void showSolved() {
+        char[][] maze2 = new char[maze.length][maze[0].length];
+        for (int j = 0; j < maze.length; ++j) {
+            for (int i = 0; i < maze[j].length; ++i) {
+                maze2[j][i] = maze[j][i];
+            }
+        }
+        for (Pos pos : path) {
+            maze2[pos.y][pos.x] = SELF;
+        }
+        maze2[START_POS.y][START_POS.x-2] = START;
+        maze2[START_POS.y][START_POS.x-1] = '>';
+        maze2[GOAL_POS.y][GOAL_POS.x+1] = '<';
+        maze2[GOAL_POS.y][GOAL_POS.x+2] = GOAL;
+        showMaze(maze2);
     }
 
     public abstract char[][] genMaze();
