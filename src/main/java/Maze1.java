@@ -33,8 +33,8 @@ public class Maze1 extends MazeBase {
         maze[GOAL_POS.y][GOAL_POS.x] = GOAL;
     }
 
-    private static Pos[] DIRECTIONS
-        = new Pos[] { new Pos(1, 0), new Pos(0, 1), new Pos(-1, 0), new Pos(0, -1) };
+//    private static Pos[] DIRECTIONS
+//        = new Pos[] { new Pos(1, 0), new Pos(0, 1), new Pos(-1, 0), new Pos(0, -1) };
     private static Random rand = new Random();
     private static Pos getDirection(boolean firstRow) {
         return (firstRow?DIRECTIONS[rand.nextInt(4)]:DIRECTIONS[rand.nextInt(3)]);

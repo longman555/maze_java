@@ -43,6 +43,9 @@ public abstract class MazeBase {
     protected ArrayList<Pos> path;
 
 
+    protected static Pos[] DIRECTIONS
+        = new Pos[] { new Pos(1, 0), new Pos(0, 1), new Pos(-1, 0), new Pos(0, -1) };
+
     // protected‚ðŽŽ‚µ‚Ä‚Ý‚é
     public MazeBase() {
         maze = new char[YMAX+1][XMAX+1];
@@ -53,16 +56,60 @@ public abstract class MazeBase {
         for (char[] row : maze) { System.out.println(new String(row)); }
     }
 
-    static public ArrayList<Pos> solveMaze(char[][] maze) {
-        LinkedList<Pos> frontier = new LinkedList<>();
-        frontier.add(START_POS);
-        
-        while (!frontier.isEmpty()) {
-            Pos pos = frontier.poll();
-
+    static private boolean checkPos(Pos newPos, char[][] maze, ArrayList<Pos> p) {
+        int x = newPos.x, y = newPos.y;
+        if (x<START_POS.x || y<START_POS.y || x>GOAL_POS.x || y>GOAL_POS.y) {
+            return false;
         }
+        if (maze[y][x] == WALL) { return false; }
+        if (p.contains(newPos)) { return false; }
+        return true;
+    }
 
+    static private ArrayList<Pos> solveMazeByLoop(char[][] maze) {
+        ArrayList<Pos> path = new ArrayList<>();
+        path.add(START_POS);
+        LinkedList<ArrayList<Pos>> frontier = new LinkedList<>();
+        frontier.add(path);
+        while (!frontier.isEmpty()) {
+            path = frontier.poll();
+            last = path.get(path.size()-1);
+            if (GOAL_POS.equals(last)) { return path; }
+            for (Pos d : DIRECTIONS) {
+                Pos newPos = new Pos(last.y+d.y, last.x+d.x);
+                if (!checkPos(newPos, maze, path)) { continue; }
+                ArrayList<Pos> copy = new ArrayList<>(path);
+                copy.add(newPos);
+                frontier.add(copy);
+            }
+        }
         return new ArrayList<Pos>();
+    }
+
+    static private ArrayList<Pos> solveMazeByRecurHelper(char[][] maze,
+                                                         ArrayList<Pos> path) {
+        Pos last = path.get(path.size()-1);
+        if (GOAL_POS.equals(last)) { return path; }
+        for (Pos d : DIRECTIONS) {
+            Pos newPos = new Pos(last.y+d.y, last.x+d.x);
+            if (!checkPos(newPos, maze, path)) { continue; }
+            ArrayList<Pos> copy = new ArrayList<>(path);
+            copy.add(newPos);
+            ArrayList<Pos> result = solveMazeByRecurHelper(maze, copy);
+            if (!result.isEmpty()) { return result; }
+        }
+        return new ArrayList<Pos>();
+    }
+
+    static private ArrayList<Pos> solveMazeByRecur(char[][] maze) {
+        ArrayList<Pos> path = new ArrayList<>();
+        path.add(START_POS);
+        return solveMazeByRecurHelper(maze, path);
+    }
+
+    static public ArrayList<Pos> solveMaze(char[][] maze) {
+        return solveMazeByLoop(maze);
+//        return solveMazeByRecur(maze);
     }
     public ArrayList<Pos> solveMaze() {
         this.path = solveMaze(maze);
