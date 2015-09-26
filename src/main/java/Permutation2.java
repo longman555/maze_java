@@ -83,23 +83,6 @@ public class Permutation2<T extends Serializable> {
     }
 
     public static void main(String[] args) {
-//        Permutation2<Integer> perm = new Permutation2<>(new Integer[]{1, 2, 3});
-//        do {
-//            System.out.println(perm.toString());
-//        } while (perm.next());
-//        System.out.println();
-//
-//        perm = new Permutation2<>(new Integer[]{1, 2, 3, 4});
-//        do {
-//            System.out.println(perm.toString());
-//        } while (perm.next());
-//        System.out.println();
-//
-//        perm = new Permutation2<>(new Integer[]{1, 2, 3, 4, 5});
-//        do {
-//            System.out.println(perm.toString());
-//        } while (perm.next());
-//        System.out.println();
         Permutation2<Integer> perm = new Permutation2<>(new Integer[]{1, 2, 3});
         System.out.println("3! -> " + perm.size());
         for (Integer[] p : perm.getAllPermutations()) {

@@ -1,7 +1,7 @@
 import java.util.LinkedList;
 import java.util.Random;
 
-class Pos {
+class Pos implements Comparable<Pos> {
 
     public final int x;
     public final int y;
@@ -21,6 +21,15 @@ class Pos {
         result = 31 * result + this.x;
         result = 31 * result + this.y;
         return result;
+    }
+    
+    @Override
+    public int compareTo(Pos other) {
+        int result = this.x - other.x;
+        if (result != 0) { return result; }
+        result = this.y - other.y;
+        if (result != 0) { return result; }
+        return 0;
     }
 }
 

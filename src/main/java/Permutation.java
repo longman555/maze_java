@@ -65,7 +65,7 @@ public class Permutation<T extends Comparable<T>> {
 
     // 自作関数nextのリファクタリング版
     public boolean next_b() {
-        int i = srcLen-1;
+        int i = srcLen-2;
         while (true) {
             int j = srcLen;
             while (src[i].compareTo(src[--j]) > 0) { }
@@ -74,14 +74,14 @@ public class Permutation<T extends Comparable<T>> {
                 reverse(i+1, srcLen);
                 return true;
             }
-            if (--i == -1) {
+            if (--i == -1) {    // (i == 0) とすると無限ループ
                 reverse(0, srcLen);
                 return false;
             }
         }
     }
 
-    // std::next_permutation@C++の実装例の移植
+    // std::next_permutation@C++の実装例の移植：最も高速
     public boolean next2() {
         int i = srcLen-1;
         while (true) {
