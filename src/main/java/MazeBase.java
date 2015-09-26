@@ -1,5 +1,5 @@
-import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Random;
 
 class Pos {
 
@@ -40,8 +40,9 @@ public abstract class MazeBase {
     protected final static char GOAL = 'G';
 
     protected char[][] maze;
-    protected ArrayList<Pos> path;
+    protected LinkedList<Pos> path;
 
+    protected static Random rand = new Random();
 
     protected static Pos[] DIRECTIONS
         = new Pos[] { new Pos(1, 0), new Pos(0, 1), new Pos(-1, 0), new Pos(0, -1) };
@@ -49,10 +50,15 @@ public abstract class MazeBase {
     // protected‚ðŽŽ‚µ‚Ä‚Ý‚é
     public MazeBase() {
         maze = new char[YMAX+1][XMAX+1];
-        path = new ArrayList<>();
+        path = new LinkedList<>();
     }
 
-    static private boolean checkPos(Pos newPos, char[][] maze, ArrayList<Pos> p) {
+    protected void setStartAndGoal() {
+        maze[START_POS.y][START_POS.x] = START;
+        maze[GOAL_POS.y][GOAL_POS.x]   = GOAL;
+    }
+
+    static private boolean checkPos(Pos newPos, char[][] maze, LinkedList<Pos> p) {
         int x = newPos.x, y = newPos.y;
         if (x<START_POS.x || y<START_POS.y || x>GOAL_POS.x || y>GOAL_POS.y) {
             return false;
@@ -62,10 +68,10 @@ public abstract class MazeBase {
         return true;
     }
 
-    static private ArrayList<Pos> solveMazeByLoop(char[][] maze) {
-        ArrayList<Pos> path = new ArrayList<>();
+    static private LinkedList<Pos> solveMazeByLoop(char[][] maze) {
+        LinkedList<Pos> path = new LinkedList<>();
         path.add(START_POS);
-        LinkedList<ArrayList<Pos>> frontier = new LinkedList<>();
+        LinkedList<LinkedList<Pos>> frontier = new LinkedList<>();
         frontier.add(path);
         while (!frontier.isEmpty()) {
             path = frontier.poll();
@@ -74,40 +80,40 @@ public abstract class MazeBase {
             for (Pos d : DIRECTIONS) {
                 Pos newPos = new Pos(last.x+d.x, last.y+d.y);
                 if (!checkPos(newPos, maze, path)) { continue; }
-                ArrayList<Pos> copy = new ArrayList<>(path);
+                LinkedList<Pos> copy = new LinkedList<>(path);
                 copy.add(newPos);
                 frontier.add(copy);
             }
         }
-        return new ArrayList<Pos>();
+        return new LinkedList<Pos>();
     }
 
-    static private ArrayList<Pos> solveMazeByRecurHelper(char[][] maze,
-                                                         ArrayList<Pos> path) {
+    static private LinkedList<Pos> solveMazeByRecurHelper(char[][] maze,
+                                                         LinkedList<Pos> path) {
         Pos last = path.get(path.size()-1);
         if (GOAL_POS.equals(last)) { return path; }
         for (Pos d : DIRECTIONS) {
             Pos newPos = new Pos(last.x+d.x, last.y+d.y);
             if (!checkPos(newPos, maze, path)) { continue; }
-            ArrayList<Pos> copy = new ArrayList<>(path);
+            LinkedList<Pos> copy = new LinkedList<>(path);
             copy.add(newPos);
-            ArrayList<Pos> result = solveMazeByRecurHelper(maze, copy);
+            LinkedList<Pos> result = solveMazeByRecurHelper(maze, copy);
             if (!result.isEmpty()) { return result; }
         }
-        return new ArrayList<Pos>();
+        return new LinkedList<Pos>();
     }
 
-    static private ArrayList<Pos> solveMazeByRecur(char[][] maze) {
-        ArrayList<Pos> path = new ArrayList<>();
+    static private LinkedList<Pos> solveMazeByRecur(char[][] maze) {
+        LinkedList<Pos> path = new LinkedList<>();
         path.add(START_POS);
         return solveMazeByRecurHelper(maze, path);
     }
 
-    static public ArrayList<Pos> solveMaze(char[][] maze) {
+    static public LinkedList<Pos> solveMaze(char[][] maze) {
         return solveMazeByLoop(maze);
 //        return solveMazeByRecur(maze);
     }
-    public ArrayList<Pos> solveMaze() {
+    public LinkedList<Pos> solveMaze() {
         this.path = solveMaze(maze);
         if (path.isEmpty()) { System.out.println("empty!"); }
         return path;

@@ -2,7 +2,7 @@
  * u–_“|‚µ–@v‚ğg‚Á‚Ä–À˜H‚ğ©“®¶¬‚·‚é
  */
 import java.util.Random;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Maze1 extends MazeBase {
 
@@ -29,13 +29,9 @@ public class Maze1 extends MazeBase {
         for (int j = 4; j <= YMAX-4; j += 2) {
             for (int i = 4; i <= XMAX-4; i += 2) { maze[j][i] = WALL; }
         }
-        maze[START_POS.y][START_POS.x] = START;
-        maze[GOAL_POS.y][GOAL_POS.x] = GOAL;
+        setStartAndGoal();
     }
 
-//    private static Pos[] DIRECTIONS
-//        = new Pos[] { new Pos(1, 0), new Pos(0, 1), new Pos(-1, 0), new Pos(0, -1) };
-    private static Random rand = new Random();
     private static Pos getDirection(boolean firstRow) {
         return (firstRow?DIRECTIONS[rand.nextInt(4)]:DIRECTIONS[rand.nextInt(3)]);
     }
@@ -70,7 +66,7 @@ public class Maze1 extends MazeBase {
     public static void main(String[] args) {
         Maze1 maze1 = new Maze1();
         maze1.showMaze(); System.out.println();
-        ArrayList<Pos> path = maze1.solveMaze();
+        LinkedList<Pos> path = maze1.solveMaze();
         System.out.printf("[main] Found Path Length -> %d\n", path.size());
         maze1.showSolved(); System.out.println();
     }
