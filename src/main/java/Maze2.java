@@ -34,29 +34,30 @@ public class Maze2 extends MazeBase {
     }
 
     private static Pos[] DIRS = new Pos[] {
-        new Pos(0, -2), new Pos(2, 0), new Pos(0, 2), new Pos(-2, 0)
+        new Pos(-2, 0), new Pos(0, -2), new Pos(0, 2), new Pos(2, 0)
     };
 
     private static ArrayList<Pos[]> ALL_DIRS
-        = new Permutation(DIRS).getAllPermutations();
+        = new Permutation<Pos>(DIRS).getAllPermutations();
 
     public char[][] genMaze() {
         initMaze();
         while (!sites.isEmpty()) {
             // QueueÇégÇ§ÅH
             Pos site = sites.remove(rand.nextInt(sites.size()));
-            Pos newPos = null;
-            boolean found = false;
-            for (Pos d : ALL_DIRS.get(rand.nextInt(ALL_DIRS.size()))) {
-                newPos = new Pos(site.x+d.x, site.y+d.y);
-                if (maze[newPos.y][newPos.x] == WALL) { found = true; break; }
+            while (true) {
+                Pos newPos = null; boolean found = false;
+                for (Pos d : ALL_DIRS.get(rand.nextInt(ALL_DIRS.size()))) {
+                    newPos = new Pos(site.x+d.x, site.y+d.y);
+                    if (maze[newPos.y][newPos.x] == WALL) { found = true; break; }
+                }
+                if (! found) { break; }
+                maze[newPos.y][newPos.x] = ROAD;
+                maze[(site.y+newPos.y)/2][(site.x+newPos.x)/2] = ROAD;
+                sites.add(newPos);
+                sites.add(site);
+                site = newPos;
             }
-            if (! found) { continue; }
-            maze[newPos.y][newPos.x] = ROAD;
-            maze[(site.y+newPos.y)/2][(site.x+newPos.x)/2] = ROAD;
-            sites.add(newPos);
-            sites.add(site);
-            site = newPos;
         }
         return maze;
     }

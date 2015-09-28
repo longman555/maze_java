@@ -11,6 +11,7 @@
  */
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Permutation<T extends Comparable<T>> {
 
@@ -101,13 +102,26 @@ public class Permutation<T extends Comparable<T>> {
         }
     }
 
+    // src‚Ì®—ñó‹µ‚É‚æ‚Á‚Ä‚ÍA‚·‚×‚Ä‚Ì‡—ñ‚ª¶¬‚³‚ê‚È‚¢
+/*
+ *  public ArrayList<T[]> getAllPermutations() {
+ *      ArrayList<T[]> result = new ArrayList<>(size());
+ *      do {
+ *          result.add(Arrays.copyOf(src, srcLen));
+ *      } while (next_b());
+ *      return result;
+ *  }
+ */
+
+    // src‚Ì®—ñó‹µ‚ÉŠÖ‚í‚ç‚¸‚·‚×‚Ä‚Ì‡—ñ‚ğ¶¬‚·‚é‚É‚Í‚±‚¿‚ç‚Ì•û‚ª—Ç‚¢B
     public ArrayList<T[]> getAllPermutations() {
         ArrayList<T[]> result = new ArrayList<>(size());
-        do {
+        for (int i = 0; i < size(); ++i) {
             result.add(Arrays.copyOf(src, srcLen));
-//        } while (next());
-        } while (next_b());
-//        } while (next2());
+            next();
+//            next_b();
+//            next2();
+        }
         return result;
     }
 
@@ -138,5 +152,31 @@ public class Permutation<T extends Comparable<T>> {
             System.out.println(Arrays.toString(perm.getPermutation()));
         } while (perm.next());
         System.out.println();
+
+        perm = new Permutation<>(new Integer[]{ 3, 1, 2 });
+        ArrayList<Integer[]> result = new ArrayList<>();
+        for (int i = 0; i < perm.size(); ++i) {
+            result.add(perm.getPermutation());
+            System.out.println(Arrays.toString(perm.getPermutation()));
+            perm.next();
+        }
+        System.out.printf("[perm] result.size() -> %d\n", result.size());
+        System.out.println();
+
+        Permutation<Pos> perm2 = new Permutation<>(new Pos[] {
+            new Pos(0, -2), new Pos(2, 0), new Pos(0, 2), new Pos(-2, 0)
+        });
+        ArrayList<Pos[]> result2 = perm2.getAllPermutations();
+        assert result2.size() == perm2.size();
+        for (Pos[] p : result2) {
+            System.out.println(Arrays.toString(p));
+        }
+
+        ArrayList<ArrayList<Pos>> al = new ArrayList<>(result2.size());
+        for (Pos[] p : result2) {
+            al.add(new ArrayList<Pos>(Arrays.asList(p)));
+        }
+        HashSet<ArrayList<Pos>> hs = new HashSet<>(al);
+        System.out.println(hs.size());
     }
 }

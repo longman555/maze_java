@@ -22,7 +22,7 @@ class Pos implements Comparable<Pos> {
         result = 31 * result + this.y;
         return result;
     }
-    
+
     @Override
     public int compareTo(Pos other) {
         int result = this.x - other.x;
@@ -30,6 +30,13 @@ class Pos implements Comparable<Pos> {
         result = this.y - other.y;
         if (result != 0) { return result; }
         return 0;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Pos{");
+        sb.append(this.x); sb.append(","); sb.append(this.y); sb.append("}");
+        return sb.toString();
     }
 }
 

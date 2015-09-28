@@ -39,9 +39,9 @@ class Permutation3<T extends Comparable<T>> {
 
     public ArrayList<T[]> getAllPermutations() {
         ArrayList<T[]> result = new ArrayList<>(permLen);
-        getAllPermutationsHelper(0, new boolean[srcLen],
-                                 (T[])Array.newInstance(src.getClass().getComponentType(),srcLen),
-                                 result);
+        @SuppressWarnings("unchecked")  // 「汎用配列」生成のため
+        T[] tmp = (T[])Array.newInstance(src.getClass().getComponentType(), srcLen);
+        getAllPermutationsHelper(0, new boolean[srcLen], tmp, result);
         return result;
     }
 
