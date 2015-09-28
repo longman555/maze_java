@@ -35,7 +35,7 @@ public class PosTest {
         assertTrue(pos00.compareTo(pos00b) == 0);
         assertTrue(pos00.compareTo(pos10) < 0);
         assertTrue(pos10.compareTo(pos01) > 0);
-        assertTrue(pos10.compareTo(pos12) > 0);
+        assertTrue(pos10.compareTo(pos12) < 0);
     }
 
     @Test
