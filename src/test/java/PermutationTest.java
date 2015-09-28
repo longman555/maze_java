@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class PermutationTest {
@@ -35,8 +38,10 @@ public class PermutationTest {
 
     @After
     public void tearDown() {
-        src123 = src1234 = src12345 = src4pos = null;
-        perm123 = perm1234 = perm12345 = perm4pos = null;
+        src123 = src1234 = src12345 = null;
+        src4pos = null;
+        perm123 = perm1234 = perm12345 = null;
+        perm4pos = null;
     }
 
     @Test
