@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import org.junit.After;
 import org.junit.Before;
@@ -34,8 +36,6 @@ public class PermutationTest {
         perm4pos = new Permutation<>(src4pos);
     }
 
-
-
     @After
     public void tearDown() {
         src123 = src1234 = src12345 = null;
@@ -55,19 +55,30 @@ public class PermutationTest {
         assertEquals(24, perm4pos.size());
     }
 
+    private <T> ArrayList<ArrayList<T>> toArrayList(ArrayList<T[]> src) {
+        ArrayList<ArrayList<T>> result = new ArrayList<>(src.size());
+        for (T[] content : src) {
+            result.add(new ArrayList<T>(Arrays.asList(content)));
+        }
+        return result;
+    }
+
     @Test
     public void testGetAllPermutations() {
         ArrayList<Integer[]> res123 = perm123.getAllPermutations();
         assertEquals(6, res123.size());
+        assertEquals(6, new HashSet(toArrayList(res123)).size());
 
         ArrayList<Integer[]> res1234 = perm1234.getAllPermutations();
         assertEquals(24, res1234.size());
+        assertEquals(24, new HashSet(toArrayList(res1234)).size());
 
         ArrayList<Integer[]> res12345 = perm12345.getAllPermutations();
         assertEquals(120, res12345.size());
+        assertEquals(120, new HashSet(toArrayList(res12345)).size());
 
         ArrayList<Pos[]> res4pos = perm4pos.getAllPermutations();
         assertEquals(24, res4pos.size());
+        assertEquals(24, new HashSet(toArrayList(res4pos)).size());
     }
-
 }
